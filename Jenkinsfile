@@ -134,7 +134,7 @@ pipeline {
 
                         // optional: wait for FOD assessment to complete
                         fodPollResults releaseId: "${env.FOD_RELEASE_ID}",
-                            policyFailureBuildResultPreference: 1,
+                            //policyFailureBuildResultPreference: 1,
                             pollingInterval: 5
                     } else {
                         println "No Static Application Security Testing (SAST) to do."
@@ -184,13 +184,13 @@ pipeline {
 		// An example manual release checkpoint
         stage('Stage') {
         	agent { label 'master' }
-        	steps {
+        	/*steps {
             	input id: 'Release', 
             		message: 'Ready to Release?', 
             		ok: 'Yes, let\'s go', 
             		submitter: 'admin', 
             		submitterParameter: 'approver'
-        	}
+        	}*/
         }
 
         stage('Release') {
