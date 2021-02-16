@@ -1,0 +1,21 @@
+FROM mfdemouk/openjdk:1.8.0-nanoserver-1809
+
+LABEL maintainer="kevin.lee@microfocus.com"
+
+# Add a volume pointing to C:\Data
+VOLUME C:\\data
+
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
+
+# The application's jar file
+ARG JAR_FILE=target/SpringEightBall.jar
+
+# Copy the application's jar to the container
+COPY ${JAR_FILE} app.jar
+
+# JAVA_OPTS to be passed in
+ENV JAVA_OPTS="-Xmx512m -Xss256k"
+
+# Run the jar file
+ENTRYPOINT ["cmd","/c","java -jar C:\\app.jar"]
