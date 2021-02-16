@@ -184,13 +184,16 @@ pipeline {
 		// An example manual release checkpoint
         stage('Stage') {
         	agent { label 'master' }
-        	/*steps {
-            	input id: 'Release', 
+        	steps {
+                println "We could have a manual approval here..."
+            	/*input id: 'Release',
             		message: 'Ready to Release?', 
             		ok: 'Yes, let\'s go', 
             		submitter: 'admin', 
             		submitterParameter: 'approver'
-        	}*/
+
+            	 */
+        	}
         }
 
         stage('Release') {
