@@ -123,19 +123,20 @@ pipeline {
                     println "Using classpath: $classpath"
 
                     if (params.FOD_SAST) {
+                        println "Using FOD for Static Application Security Testing (SAST)"
                         // Upload built application to Fortify on Demand and carry out Static Assessment
-                        fodStaticAssessment releaseId: ${env.FOD_RELEASE_ID},
+                        /*fodStaticAssessment releaseId: ${env.FOD_RELEASE_ID},
                             // bsiToken: "${env.FOD_BSI_TOKEN}",
                             entitlementPreference: 'SubscriptionOnly',
                             inProgressScanActionType: 'CancelInProgressScan',
                             remediationScanPreferenceType: 'NonRemediationScanOnly',
-                            srcLocation: "${env.FOD_UPLOAD_DIR}"
+                            srcLocation: "${env.FOD_UPLOAD_DIR}"*/
 
                         // optional: wait for FOD assessment to complete
-                        fodPollResults releaseId: ${env.FOD_RELEASE_ID}
+                        /*fodPollResults releaseId: ${env.FOD_RELEASE_ID}
                             //bsiToken: "${env.FOD_BSI_TOKEN}",
                             //policyFailureBuildResultPreference: 1,
-                            pollingInterval: 5
+                            pollingInterval: 5*/
                     } else {
                         println "No Static Application Security Testing (SAST) to do."
                     }
