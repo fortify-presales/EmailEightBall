@@ -26,9 +26,9 @@ pipeline {
 
     environment {
         // Application settings
-		APP_NAME = "Spring EightBall"                       // Application name
+		APP_NAME = "Spring Eight Ball"                      // Application name
         APP_VER = "master"                                  // Application release - GitHub master branch
-        COMPONENT_NAME = "eightball"                        // Component name
+        COMPONENT_NAME = "SpringEightBall"                  // Component name
         GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()    // Git Repo
         JAVA_VERSION = 11                                   // Java version to compile as
         ISSUE_IDS = ""                                      // List of issues found from commit
@@ -38,7 +38,7 @@ pipeline {
         GIT_CREDS = credentials('eightball-git-creds-id')
        
 	    // The following are defaulted and can be override by creating a "Build parameter" of the same name
-        FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6446'}" // Fortify on Demand Release Id
+        FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6517'}" // Fortify on Demand Release Id
         DOCKER_ORG = "${params.DOCKER_ORG ?: 'mfdemouk'}" // Docker organisation (in Docker Hub) to push released images to
 	}
 
@@ -83,9 +83,9 @@ pipeline {
                     // Record the test results (success)
                     junit "**/target/surefire-reports/TEST-*.xml"
                     // Archive the built file
-                    archiveArtifacts "target/${env.COMPONENT_NAME}.jar,target/${env.COMPONENT_NAME}.war"
+                    archiveArtifacts "target/${env.COMPONENT_NAME}.jar"
                     // Stash the deployable files
-                    stash includes: "target/${env.COMPONENT_NAME}.jar,target/${env.COMPONENT_NAME}.war", name: "${env.COMPONENT_NAME}_release"
+                    stash includes: "target/${env.COMPONENT_NAME}.jar", name: "${env.COMPONENT_NAME}_release"
                 }
                 failure {
                     // Record the test results (failures)
