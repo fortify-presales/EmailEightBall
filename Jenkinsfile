@@ -1,11 +1,5 @@
 #!/usr/bin/env groovy
 
-
-// The instances of Docker image and container that are created
-def dockerImage
-def dockerContainer
-def dockerContainerName = "eightball-jenkins"
-
 pipeline {
     agent any
 
@@ -20,8 +14,6 @@ pipeline {
 				description: 'Use Fortify on Demand for Static Application Security Testing')
         booleanParam(name: 'FOD_DAST',       	defaultValue: params.FOD_DAST ?: false,
                 description: 'Use Fortify on Demand for Dynamic Application Security Testing')        
-        booleanParam(name: 'RELEASE_TO_DOCKERHUB', defaultValue: params.RELEASE_TO_DOCKERHUB ?: false,
-                description: 'Release built and tested image to Docker Hub')
     }
 
     environment {
@@ -29,7 +21,6 @@ pipeline {
 		APP_NAME = "Spring Eight Ball"                      // Application name
         APP_VER = "master"                                  // Application release - GitHub master branch
         COMPONENT_NAME = "SpringEightBall"                  // Component name
-        DOCKER_COMPONENT_NAME = "spring-eight-ball"         // Docker Component name
         GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()    // Git Repo
         JAVA_VERSION = 1.8                                  // Java version to compile as
         ISSUE_IDS = ""                                      // List of issues found from commit
@@ -40,7 +31,6 @@ pipeline {
        
 	    // The following are defaulted and can be override by creating a "Build parameter" of the same name
         FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6517'}" // Fortify on Demand Release Id
-        DOCKER_ORG = "${params.DOCKER_ORG ?: 'mfdemouk'}" // Docker organisation (in Docker Hub) to push released images to
 	}
 
     tools {
@@ -150,13 +140,7 @@ pipeline {
                 script {
                     // unstash the built files
                     unstash name: "${env.COMPONENT_NAME}_release"
-                    if (isUnix()) {
-                        // Create docker image using JAR file
-                        dockerImage = docker.build "${env.DOCKER_ORG}/${env.DOCKER_COMPONENT_NAME}:${env.APP_VER}.${env.BUILD_NUMBER}"
-                    } else {
-                        // Create docker image using JAR file
-                        dockerImage = docker.build("${env.DOCKER_ORG}/${env.DOCKER_COMPONENT_NAME}:${env.APP_VER}.${env.BUILD_NUMBER}", "-f Dockerfile.win .")
-                    }
+                    println "Deploying application ..."
                 }
             }
         }
@@ -168,8 +152,8 @@ pipeline {
             	    expression { params.FOD_DAST == true }
         	    }
             }
-            // Run on an Agent with "docker" label applied
-            agent {label "docker"}
+            // Run on an Agent with "fortify" label applied
+            agent {label "fortify"}
             steps {
                 script {                    
 					if (params.FOD_DAST) {
@@ -200,47 +184,11 @@ pipeline {
             agent { label 'master' }
             steps {
                 script {
-                    // Example publish to Docker Hub
-                    if (params.RELEASE_TO_DOCKERHUB) {
-                        docker.withRegistry('https://registry.hub.docker.com', 'eightball-dockerhub-creds-id') {
-                            dockerImage.push("${env.APP_VER}.${BUILD_NUMBER}")
-                            // and tag as "latest"
-                            dockerImage.push("latest")
-                        }
-                    } else {
-                        println "No releasing to do."
-                    }
+                    println "Releasing application ..."
                 }
             }
         }
 
-    }
-
-    post {
-        always {
-            script {
-                // check if container is still running and if so stop/remove it
-                if (isUnix()) {
-                    sh(script: "docker ps -aq --filter name=eightball-jenkins > container.id")
-                    if (fileExists('container.id')) {
-                        def existingId = readFile('container.id').trim()
-                        if (existingId) {
-                            println "Found existing eightball-jenkins container id: ${existingId} ... deleting..."
-                            sh(script: "docker stop $existingId && docker rm -f $existingId")
-                        }
-                    }
-                } else {
-                    bat(script: "docker ps -aq --filter name=eightball-jenkins > container.id")
-                    if (fileExists('container.id')) {
-                        def existingId = readFile('container.id').trim()
-                        if (existingId) {
-                            println "Found existing eightball-jenkins container id: ${existingId} ... deleting..."
-                            bat(script: "docker stop ${existingId} && docker rm -f ${existingId}")
-                        }
-                    }
-                }
-            }
-        }
     }
 
 }
