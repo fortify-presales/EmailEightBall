@@ -125,14 +125,14 @@ pipeline {
                     if (params.FOD_SAST) {
                         println "Starting FOD SAST for Release: ${env.FOD_RELEASE_ID}"
                         // Upload built application to Fortify on Demand and carry out Static Assessment
-                        fodStaticAssessment releaseId: ${env.FOD_RELEASE_ID},
+                        fodStaticAssessment releaseId: "${env.FOD_RELEASE_ID}",
                             entitlementPreference: 'SubscriptionOnly',
                             inProgressScanActionType: 'CancelInProgressScan',
                             remediationScanPreferenceType: 'NonRemediationScanOnly',
                             srcLocation: "${env.FOD_UPLOAD_DIR}"
 
                         // optional: wait for FOD assessment to complete
-                        fodPollResults releaseId: ${env.FOD_RELEASE_ID}
+                        fodPollResults releaseId: "${env.FOD_RELEASE_ID}"
                             //bsiToken: "${env.FOD_BSI_TOKEN}",
                             //policyFailureBuildResultPreference: 1,
                             pollingInterval: 5
