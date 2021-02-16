@@ -29,6 +29,7 @@ pipeline {
 		APP_NAME = "Spring Eight Ball"                      // Application name
         APP_VER = "master"                                  // Application release - GitHub master branch
         COMPONENT_NAME = "SpringEightBall"                  // Component name
+        DOCKER_COMPONENT_NAME = "spring-eight-ball"         // Docker Component name
         GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()    // Git Repo
         JAVA_VERSION = 11                                   // Java version to compile as
         ISSUE_IDS = ""                                      // List of issues found from commit
@@ -151,10 +152,10 @@ pipeline {
                     unstash name: "${env.COMPONENT_NAME}_release"
                     if (isUnix()) {
                         // Create docker image using JAR file
-                        dockerImage = docker.build "${env.DOCKER_ORG}/${env.COMPONENT_NAME}:${env.APP_VER}.${env.BUILD_NUMBER}"
+                        dockerImage = docker.build "${env.DOCKER_ORG}/${env.DOCKER_COMPONENT_NAME}:${env.APP_VER}.${env.BUILD_NUMBER}"
                     } else {
                         // Create docker image using JAR file
-                        dockerImage = docker.build("${env.DOCKER_ORG}/${env.COMPONENT_NAME}:${env.APP_VER}.${env.BUILD_NUMBER}", "-f Dockerfile.win .")
+                        dockerImage = docker.build("${env.DOCKER_ORG}/${env.DOCKER_COMPONENT_NAME}:${env.APP_VER}.${env.BUILD_NUMBER}", "-f Dockerfile.win .")
                     }
                 }
             }
