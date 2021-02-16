@@ -31,7 +31,7 @@ pipeline {
         COMPONENT_NAME = "SpringEightBall"                  // Component name
         DOCKER_COMPONENT_NAME = "spring-eight-ball"         // Docker Component name
         GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()    // Git Repo
-        JAVA_VERSION = 11                                   // Java version to compile as
+        JAVA_VERSION = 1.8                                  // Java version to compile as
         ISSUE_IDS = ""                                      // List of issues found from commit
         FOD_UPLOAD_DIR = 'fod'                              // Directory where FOD upload Zip is constructed
 
