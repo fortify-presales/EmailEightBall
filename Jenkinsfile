@@ -11,14 +11,14 @@ pipeline {
     //
     parameters {         
         booleanParam(name: 'FOD_SAST',       	defaultValue: params.FOD_SAST ?: true,
-				description: 'Use Fortify on Demand for Static Application Security Testing')
+                description: 'Use Fortify on Demand for Static Application Security Testing')
         booleanParam(name: 'FOD_DAST',       	defaultValue: params.FOD_DAST ?: false,
                 description: 'Use Fortify on Demand for Dynamic Application Security Testing')        
     }
 
     environment {
         // Application settings
-		APP_NAME = "Spring Eight Ball"                      // Application name
+        APP_NAME = "Spring Eight Ball"                      // Application name
         APP_VER = "master"                                  // Application release - GitHub master branch
         COMPONENT_NAME = "SpringEightBall"                  // Component name
         GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()    // Git Repo
@@ -29,7 +29,7 @@ pipeline {
         // Credential references
         GIT_CREDS = credentials('eightball-git-creds-id')
        
-	    // The following are defaulted and can be override by creating a "Build parameter" of the same name
+        // The following are defaulted and can be overriden by creating a "Build parameter" of the same name
         FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6517'}" // Fortify on Demand Release Id
 	}
 
@@ -156,8 +156,8 @@ pipeline {
             agent {label "fortify"}
             steps {
                 script {                    
-					if (params.FOD_DAST) {
-						println "DAST via FOD is not yet implemented."						
+                    if (params.FOD_DAST) {
+                        println "DAST via FOD is not yet implemented."
                     } else {
                         println "No Dynamic Application Security Testing (DAST) to do."
                     }
@@ -169,14 +169,12 @@ pipeline {
         stage('Stage') {
         	agent { label 'master' }
         	steps {
-                println "We could have a manual approval here..."
-            	/*input id: 'Release',
+                println "Starting manual approval..."
+            	input id: 'Release',
             		message: 'Ready to Release?', 
             		ok: 'Yes, let\'s go', 
             		submitter: 'admin', 
             		submitterParameter: 'approver'
-
-            	 */
         	}
         }
 
