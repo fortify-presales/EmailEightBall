@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringEightBallAppTests extends BaseTest {
+class SpringEightBallTests extends BaseTest {
 
 	@Test
 	void contextLoads() {

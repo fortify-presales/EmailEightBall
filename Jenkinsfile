@@ -123,9 +123,9 @@ pipeline {
                             srcLocation: "${env.FOD_UPLOAD_DIR}"
 
                         // optional: wait for FOD assessment to complete
-                        fodPollResults releaseId: "${env.FOD_RELEASE_ID}",
-                            //policyFailureBuildResultPreference: 1,
-                            pollingInterval: 5
+                        //fodPollResults releaseId: "${env.FOD_RELEASE_ID}",
+                        //        policyFailureBuildResultPreference: 1,
+                        //        pollingInterval: 5
                     } else {
                         println "No Static Application Security Testing (SAST) to do."
                     }
