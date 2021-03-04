@@ -18,3 +18,11 @@ app:
   name: Spring Eight Ball
   version: 1.0
 
+email:
+  server: smtp.gmail.com
+  port: 465
+  username: username
+  password: password
+  from: your@email.com
+  to: their@email.com
+

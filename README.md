@@ -1,4 +1,4 @@
-# Spring version of Fortify EightBall demo app
+# Email version of Fortify EightBall demo app
 
 To develop/test (as Spring Boot application):
 
@@ -15,7 +15,7 @@ mvn package
 To run:
 
 ```aidl
-java -jar target\SpringEightBall.jar 2
+java -jar target\EmailEightBall.jar 2
 
 ```
 

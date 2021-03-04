@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.microfocus</groupId>
-	<artifactId>SpringEightBall</artifactId>
+	<artifactId>EmailEightBall</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SpringEightBall</name>
-	<description>Spring version of Fortify EightBall app</description>
+	<name>EmailEightBall</name>
+	<description>Email version of Fortify EightBall app</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +30,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.4</version>
 		</dependency>
 	</dependencies>
 

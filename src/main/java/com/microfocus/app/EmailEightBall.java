@@ -1,5 +1,7 @@
 package com.microfocus.app;
 
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.SimpleEmail;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -7,19 +9,24 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.apache.commons.mail.EmailException;
+
 import java.io.FileReader;
 
 @SpringBootApplication
-public class SpringEightBall implements ApplicationRunner {
+public class EmailEightBall implements ApplicationRunner {
 
-	private static final org.slf4j.Logger log = LoggerFactory.getLogger(SpringEightBall.class);
+	private static final org.slf4j.Logger log = LoggerFactory.getLogger(EmailEightBall.class);
 
 	// the input file to read - defaults to file name "0"
 	@Value("${input:0}")
 	private String inputFile;
 
+	@Value("${email.to}")
+	private String emailTo;
+
 	public static void main(String[] args) {
-		SpringApplication.run(SpringEightBall.class, args);
+		SpringApplication.run(EmailEightBall.class, args);
 	}
 
 	@Override
@@ -28,7 +35,7 @@ public class SpringEightBall implements ApplicationRunner {
 		char[] buffer = new char[1024];
 
 		if (!args.getNonOptionArgs().isEmpty()) {
-			log.debug("Using command line args");
+			log.debug("Using command line args: " + args.toString());
 			filename = args.getNonOptionArgs().get(0);
 		} else {
 			log.debug("Using Spring arguments");
@@ -41,7 +48,20 @@ public class SpringEightBall implements ApplicationRunner {
 			System.out.println("Invalid input.");
 		}
 		new FileReader(filename).read(buffer);
-		System.out.println(buffer);
+		log.debug(buffer.toString());
+
+		try {
+
+			String subject = "This is the first line\r\n" +
+					"From: MyCompany <welcome@mycompany.com>";
+
+			EmailHelper email = new EmailHelper();
+			log.debug("Sending email to: " + emailTo);
+			email.send(emailTo, subject, buffer.toString());
+
+		} catch (EmailException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

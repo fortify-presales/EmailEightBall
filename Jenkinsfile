@@ -18,9 +18,9 @@ pipeline {
 
     environment {
         // Application settings
-        APP_NAME = "Spring Eight Ball"                      // Application name
+        APP_NAME = "EmailEightBall"                         // Application name
         APP_VER = "master"                                  // Application release - GitHub master branch
-        COMPONENT_NAME = "SpringEightBall"                  // Component name
+        COMPONENT_NAME = "EmailEightBall"                   // Component name
         GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()    // Git Repo
         JAVA_VERSION = 1.8                                  // Java version to compile as
         ISSUE_IDS = ""                                      // List of issues found from commit
