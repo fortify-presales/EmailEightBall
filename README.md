@@ -19,4 +19,6 @@ java -jar target\EmailEightBall.jar 2
 
 ```
 
+Note: for working email you will need to enter details of a working gmail account in src\main\resources\email.properties.
+
 

@@ -42,5 +42,5 @@ Write-Host ************************************************************
 Write-Host Scanning source files and libs ...
 Write-Host ************************************************************
 & sourceandlibscanner -auto -scan -bt mvn -bf pom.xml  -bc 'dependency:unpack-dependencies -Dcom.fortify.sca.ProjectRoot=.fortify -Dclassifier=sources -DexcludeTransitive -DskipTests package' `
-    -sonatype -iqurl $Env:NEXUS_IQ_URL -nexusauth $Env:NEXUS_IQ_AUTH -iqappid EmailEightBall -stage build -r iqReport.json -f EmailEightBall.json `
-	-upload -ssc $Env:SSC_URL -applicationId $Env:SSC_APP_VERSION_ID -ssctoken $Env:SSC_AUTH_TOKEN
+    -sonatype -iqurl $Env:NEXUS_IQ_URL -nexusauth $Env:NEXUS_IQ_AUTH -iqappid EmailEightBall -stage build -r iqReport.json -f EmailEightBall.fpr `
+	-upload -ssc $Env:SSC_URL -versionid $Env:SSC_APP_VERSION_ID -ssctoken $Env:SSC_AUTH_TOKEN

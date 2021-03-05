@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: prod
+    active: test
   main:
     banner-mode: "off"
 
@@ -18,4 +18,4 @@ app:
   name: Spring Eight Ball
   version: 1.0
   email: eightball@localhost
-  operation: send
+  operation: test

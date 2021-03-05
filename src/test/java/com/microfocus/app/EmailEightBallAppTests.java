@@ -2,9 +2,16 @@ package com.microfocus.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-class EmailEightBallTests extends BaseTest {
+@TestPropertySource(
+		properties = {
+				"app.operation=test"
+		}
+)
+class EmailEightBallAppTests extends BaseTest {
 
 	@Test
 	void contextLoads() {
