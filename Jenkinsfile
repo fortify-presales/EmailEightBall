@@ -30,7 +30,7 @@ pipeline {
         GIT_CREDS = credentials('eightball-git-creds-id')
        
         // The following are defaulted and can be overriden by creating a "Build parameter" of the same name
-        FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6517'}" // Fortify on Demand Release Id
+        FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6620'}" // Fortify on Demand Release Id
 	}
 
     tools {
@@ -123,9 +123,9 @@ pipeline {
                                 remediationScanPreferenceType: 'NonRemediationScanOnly',
                                 srcLocation: "${env.FOD_UPLOAD_DIR}"
                         // optional: wait for FOD assessment to complete
-                        //fodPollResults releaseId: "${env.FOD_RELEASE_ID}",
-                        //        policyFailureBuildResultPreference: 1,
-                        //        pollingInterval: 5
+                        fodPollResults releaseId: "${env.FOD_RELEASE_ID}",
+                                policyFailureBuildResultPreference: 1,
+                                pollingInterval: 5
                     } else {
                         println "No Static Application Security Testing (SAST) to do."
                     }
