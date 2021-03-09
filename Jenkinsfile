@@ -169,12 +169,12 @@ pipeline {
         stage('Stage') {
         	agent { label 'master' }
         	steps {
-                println "Starting manual approval..."
-            	input id: 'Release',
-            		message: 'Ready to Release?', 
-            		ok: 'Yes, let\'s go', 
-            		submitter: 'admin', 
-            		submitterParameter: 'approver'
+                println "Skipping manual approval..."
+            	//input id: 'Release',
+            	//	message: 'Ready to Release?',
+            	//	ok: 'Yes, let\'s go',
+            	//	submitter: 'admin',
+            	//	submitterParameter: 'approver'
         	}
         }
 
