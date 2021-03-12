@@ -48,7 +48,7 @@ Write-Host ************************************************************
 Write-Host Translating source files...
 Write-Host ************************************************************
 & sourceanalyzer '-Dcom.fortify.sca.ProjectRoot=.fortify' -b eightball -jdk 1.8 -java-build-dir "target/classes" `
-    -cp $ClassPath "src/main/java/**/*" "src/main/resources/**/*"
+    -cp $ClassPath "src/main/java/**/*" "src/main/resources/**/*" "Dockerfile" "Dockerfile.win"
 
 # Scan the application
 Write-Host ************************************************************

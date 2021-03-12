@@ -30,7 +30,7 @@ pipeline {
         GIT_CREDS = credentials('eightball-git-creds-id')
        
         // The following are defaulted and can be overriden by creating a "Build parameter" of the same name
-        FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6645'}" // Fortify on Demand Release Id
+        FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6678'}" // Fortify on Demand Release Id
 	}
 
     tools {
