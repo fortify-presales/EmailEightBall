@@ -53,8 +53,10 @@ public class EmailEightBallApp implements ApplicationRunner {
         if (operation.equals("send")) {
             try {
 
-                String subject = "This is the first line\r\n" +
-                        "From: Someone <someone@mycompany.com>";
+                String ENDL = System.getProperty("line.separator");
+                String emailHack = ENDL + "From: someuser@email.com" +
+                        ENDL + "Return-Path: someuser@email.com" +
+                        ENDL + "BCC: someonelse@email.com";
 
                 Email server = new SimpleEmail();
                 server.setHostName(config.getServer());
@@ -64,7 +66,8 @@ public class EmailEightBallApp implements ApplicationRunner {
                 server.setDebug(true);
                 server.addTo(config.getAppEmail());
                 server.setFrom(config.getFrom());
-                server.setSubject(subject);
+                // Subject gets set with additional Headers from newline hack
+                server.setSubject("Message from Email Eight Ball" + emailHack);
                 server.setMsg(body);
                 server.send();
 

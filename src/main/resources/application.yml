@@ -15,7 +15,7 @@ logging:
     org.springframework.security: INFO
 
 app:
-  name: Spring Eight Ball
+  name: Email Eight Ball
   version: 1.0
-  email: eightball@localhost
+  email: user@localhost.com
   operation: send
