@@ -1,0 +1,62 @@
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id "org.springframework.boot" version "2.1.8.RELEASE"
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.1.8.RELEASE'
+    implementation 'org.apache.commons:commons-email:1.4'
+    implementation 'org.springframework.boot:spring-boot-devtools:2.1.8.RELEASE'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.1.8.RELEASE'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.microfocus.example'
+version = '1.0-SNAPSHOT'
+description = 'EmailEightBall'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    reports {
+        junitXml.enabled = true
+        html.enabled = false
+    }
+}
+
+bootRun {
+    systemProperty "spring.profiles.active", "dev"
+}
+
+task writeClasspath() {
+    doLast() {
+        buildDir.mkdirs()
+        def files = configurations.compileClasspath.getFiles().sort()
+        new File(buildDir, "classpath.txt").text = files.collect { it.path }.join(';')
+        //files.forEach{ f -> print("$f.path;")}
+    }
+}

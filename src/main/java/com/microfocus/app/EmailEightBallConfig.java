@@ -11,6 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 public class EmailEightBallConfig {
 
+    // the question being asked - defaults to 'Do aliens exist?'
+    @Value("${question:Do aliens exist?}")
+    private String question;
+
     // the input file to read - defaults to file name "0"
     @Value("${input:0}")
     private String inputFile;
@@ -44,6 +48,10 @@ public class EmailEightBallConfig {
 
     public String getFrom() {
         return emailProperties.getFrom();
+    }
+
+    public String getQuestion() {
+        return question;
     }
 
     public String getInputFile() {

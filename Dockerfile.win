@@ -1,4 +1,4 @@
-FROM mfdemouk/openjdk:1.8.0-nanoserver-1809
+FROM winamd64/openjdk:11-jre-windowsservercore-1809
 
 LABEL maintainer="kevin.lee@microfocus.com"
 
@@ -11,7 +11,7 @@ VOLUME C:\\data
 EXPOSE 80
 
 # The application's jar file
-ARG JAR_FILE=target/SpringEightBall.jar
+ARG JAR_FILE=target/EmailEightBall.jar
 
 # Copy the application's jar to the container
 COPY ${JAR_FILE} app.jar

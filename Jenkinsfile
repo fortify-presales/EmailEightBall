@@ -21,6 +21,7 @@ pipeline {
         APP_NAME = "EmailEightBall"                         // Application name
         APP_VER = "master"                                  // Application release - GitHub master branch
         COMPONENT_NAME = "EmailEightBall"                   // Component name
+        COMPONENT_VERSION = "1.0-SNAPSHOT"                  // Component version
         GIT_URL = scm.getUserRemoteConfigs()[0].getUrl()    // Git Repo
         JAVA_VERSION = 1.8                                  // Java version to compile as
         ISSUE_IDS = ""                                      // List of issues found from commit
@@ -29,13 +30,12 @@ pipeline {
         // Credential references
         GIT_CREDS = credentials('eightball-git-creds-id')
        
-        // The following are defaulted and can be overriden by creating a "Build parameter" of the same name
+        // The following are defaulted and can be overridden by creating a "Build parameter" of the same name
         FOD_RELEASE_ID = "${params.FOD_RELEASE_ID ?: '6678'}" // Fortify on Demand Release Id
 	}
 
     tools {
-        // Install the Maven version configured as "M3" and add it to the path.
-        maven 'M3'
+        // None as of yet
     }
 
     stages {
@@ -60,11 +60,11 @@ pipeline {
                     println "Git commit id: ${env.GIT_COMMIT_ID}"
                     //println "Git commit author: ${env.GIT_COMMIT_AUTHOR}"
 
-                    // Run maven to build WAR/JAR application
+                    // Run gradle to build JAR
                     if (isUnix()) {
-                        sh 'mvn clean package'
+                        sh 'gradlew clean build'
                     } else {
-                        bat "mvn clean package"
+                        bat "gradlew clean build"
                     }
                 }
             }
@@ -72,15 +72,15 @@ pipeline {
             post {
                 success {
                     // Record the test results (success)
-                    junit "**/target/surefire-reports/TEST-*.xml"
+                    junit "**/build/test-results/TEST-*.xml"
                     // Archive the built file
-                    archiveArtifacts "target/${env.COMPONENT_NAME}.jar"
+                    archiveArtifacts "build/lib/${env.COMPONENT_NAME}-${env.COMPONENT_VERSION}.jar"
                     // Stash the deployable files
-                    stash includes: "target/${env.COMPONENT_NAME}.jar", name: "${env.COMPONENT_NAME}_release"
+                    stash includes: "build/${env.COMPONENT_NAME}-${env.COMPONENT_VERSION}.jar", name: "${env.COMPONENT_NAME}_release"
                 }
                 failure {
                     // Record the test results (failures)
-                    junit "**/target/surefire-reports/TEST-*.xml"
+                    junit "**/build/test-results/TEST-*.xml"
                 }
             }
         }
@@ -99,22 +99,26 @@ pipeline {
                     // Get code from Git repository so we can recompile it
                 	git credentialsId: 'eightball-git-creds-id', url: "${env.GIT_URL}"
 
-                    // Run Maven debug compile, download dependencies (if required) and package up for FOD
+                    // Run gradle build
                     if (isUnix()) {
-                        sh "mvn -Dmaven.compiler.debuglevel=lines,vars,source -DskipTests -P fortify clean verify"
-                        sh "mvn dependency:build-classpath -Dmdep.regenerateFile=true -Dmdep.outputFile=${env.WORKSPACE}/cp.txt"
+                        sh "gradlew clean build writeClasspath"
                     } else {
-                        bat "mvn -Dmaven.compiler.debuglevel=lines,vars,source -DskipTests -P fortify clean verify"
-                        bat "mvn dependency:build-classpath -Dmdep.regenerateFile=true -Dmdep.outputFile=${env.WORKSPACE}/cp.txt"
+                        sh "gradlew clean build writeClasspath"
                     }
 
                     // read contents of classpath file
-                    def classpath = readFile "${env.WORKSPACE}/cp.txt"
+                    def classpath = readFile "${env.WORKSPACE}/build/classpath.txt"
                     println "Using classpath: $classpath"
 
                     if (params.FOD_SAST) {
+                        println "Using scancentral to package application"
+                        if (isUnix()) {
+                            sh "scancentral package -bt gradle -bf build.gradle -bc 'clean build writeClasspath -x test' -o fod.zip"
+                        } else {
+                            sh "scancentral package -bt gradle -bf build.gradle -bc 'clean build writeClasspath -x test' -o fod.zip"
+                        }
+                        unzip zipFile: fod.zip, dir: "${env.FOD_UPLOAD_DIR}"
                         println "Starting FOD SAST for Release: ${env.FOD_RELEASE_ID}"
-                        println "Uploading from ${env.FOD_UPLOAD_DIR}"
                         // Upload built application to Fortify on Demand and carry out Static Assessment
                         fodStaticAssessment entitlementPreference: 'SubscriptionOnly',
                                 inProgressBuildResultType: 'WarnBuild',
@@ -128,6 +132,13 @@ pipeline {
                                 pollingInterval: 5
                     } else {
                         println "No Static Application Security Testing (SAST) to do."
+                    }
+                }
+            }
+            post {
+                always {
+                    dir("${env.FOD_UPLOAD_DIR}") {
+                        deleteDir()
                     }
                 }
             }

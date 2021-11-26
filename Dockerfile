@@ -11,7 +11,7 @@ VOLUME /tmp
 EXPOSE 80
 
 # The application's jar file
-ARG JAR_FILE=target/SpringEightBall.jar
+ARG JAR_FILE=target/EmailEightBall.jar
 
 # Copy the application's jar to the container
 COPY ${JAR_FILE} app.jar
