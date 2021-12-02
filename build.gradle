@@ -23,8 +23,9 @@ dependencies {
 
 apply plugin: 'io.spring.dependency-management'
 
+project.archivesBaseName = 'EmailEightBall'
 group = 'com.microfocus.example'
-version = '1.0-SNAPSHOT'
+version = ''
 description = 'EmailEightBall'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
