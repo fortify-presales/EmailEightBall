@@ -16,7 +16,7 @@
 # assistance with configuration, feel free to create a help ticket in the Fortify on Demand portal.                                            #
 ################################################################################################################################################
 
-name: Fortify on Demand Scan
+name: Build and Security Scan
 
 # TODO: Customize trigger events based on your DevSecOps processes and typical FoD SAST scan time
 on:
@@ -37,7 +37,7 @@ on:
     - cron: '38 20 * * 2'
 
 jobs:
-  Build-SAST-Scan:
+  Build-And-Scan:
     # Use the appropriate runner for building your source code.
     # TODO: Use a Windows runner for .NET projects that use msbuild. Additional changes to RUN commands will be required to switch to Windows syntax.
     runs-on: ubuntu-latest
