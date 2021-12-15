@@ -2,12 +2,13 @@ package com.microfocus.app;
 
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 
 public class AppHelper {
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(AppHelper.class);
+    private static final Logger log = LogManager.getLogger(EmailEightBallApp.class);
 
     AppHelper() {
     }

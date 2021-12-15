@@ -22,14 +22,14 @@ java -Dspring.config.location=.\etc\fake-smtp-server.properties -jar .\lib\fake-
 and then in different console to run (with defaults):
 
 ```aidl
-java -jar .\build\libs\EmailEightBall-1.0-SNAPSHOT.jar
+java -jar .\build\libs\EmailEightBall.jar
 ```
 
 You can specify different options on the command line to ask different questions and/or send
 the results to a different email address, for example:
 
 ```aidl
-java -jar .\build\libs\EmailEightBall-1.0-SNAPSHOT.jar "Does my bum look big in this?" biggie@localhost.com
+java -jar .\build\libs\EmailEightBall.jar "Does my bum look big in this?" biggie@localhost.com
 ```
 
 You can see the resultant emails on the console or on the [email server UI](http://localhost:5080/).

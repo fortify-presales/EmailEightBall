@@ -1,5 +1,7 @@
 package com.microfocus.app;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -12,6 +14,8 @@ import org.springframework.test.context.TestPropertySource;
 		}
 )
 class EmailEightBallAppTests extends BaseTest {
+
+	private Gson gson = new GsonBuilder().create();
 
 	@Test
 	void contextLoads() {

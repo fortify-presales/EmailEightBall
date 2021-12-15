@@ -4,6 +4,9 @@ server:
 spring:
   profiles:
     active: test
+  http:
+    converters:
+      preferred-json-mapper: gson
   main:
     banner-mode: "off"
 

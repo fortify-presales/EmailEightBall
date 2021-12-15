@@ -1,9 +1,6 @@
 package com.microfocus.app;
 
-import org.slf4j.LoggerFactory;
-
 public class EmailRequest {
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(EmailRequest.class);
 
     private String server;
     private Integer port;

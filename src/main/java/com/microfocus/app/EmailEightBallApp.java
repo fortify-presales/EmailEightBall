@@ -1,9 +1,9 @@
 package com.microfocus.app;
 
-import org.apache.commons.mail.Email;
+import com.google.gson.Gson;
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -15,11 +15,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Random;
 
-@SpringBootApplication
+//@SpringBootApplication
+@SpringBootApplication(exclude = {
+        org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration.class
+})
 public class EmailEightBallApp implements ApplicationRunner {
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(EmailEightBallApp.class);
+    private static final Logger log = LogManager.getLogger(EmailEightBallApp.class);
+
     private static final int MAX_ANSWERS = 19;
+
+    @Autowired
+    private Gson gson;
 
     @Autowired
     EmailEightBallConfig config;
