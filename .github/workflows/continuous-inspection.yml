@@ -56,7 +56,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 11
           
       # Build and unit-test the application  
       - name: Gradle Build Action
